@@ -8,4 +8,8 @@ public interface DepartamentoService {
     List<Departamento> findAll();
 
     Departamento findById(int id);
+
+    Departamento findByNombreDepartamento(String nombreDepartamento);
+
+    Departamento save(Departamento objetoDepartamento);
 }

@@ -1,5 +1,7 @@
 package com.pizzati.rrhh.utilities;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -27,5 +29,11 @@ public class MetodosGenerales {
             }
         }
         return v;
+    }
+
+    public static void mensajeErrorDetalle(RedirectAttributes redirectAttrs, String mensaje, TipoMensaje tipoMensaje) {
+        redirectAttrs
+                .addFlashAttribute("mensaje", mensaje)
+                .addFlashAttribute("clase", tipoMensaje.getData());
     }
 }

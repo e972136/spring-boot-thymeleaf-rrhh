@@ -27,7 +27,19 @@
                 <a class="nav-link active btn btn-primary btn-lg" th:href="@{/sistema/rrhh/menu/}+${session.sucursal}">Regresar Inicio</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active btn btn-primary btn-lg" th:href="@{/sistema/rrhh/menu/}+${session.sucursal}">Agregar Departamento</a>
+<!--                <a class="nav-link active btn btn-primary btn-lg" th:href="@{/sistema/rrhh/menu/}+${session.sucursal}">Agregar Departamento</a>-->
+
+                <button type="button" class="btn bg-primary text-white btn-lg " data-toggle="modal"
+                        data-target="#staticBackdrop">
+                    AL CONTADO
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/>
+                        <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z"/>
+                        <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/>
+                        <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
+                    </svg>
+                </button>
+
             </li>
         </ul>
 
@@ -36,7 +48,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <h1>Lista de Empleados</h1>
+        <h1>Listado departamentos</h1>
     </div>
     <form action="" method="get" autocomplete="off">
         <div class="input-group mb-3">
@@ -49,6 +61,15 @@
             </button>
         </div>
     </form>
+
+    <!--                Mensaje-->
+    <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+         class="alert" style="width:50%;">
+        <strong th:text="${mensaje}">Success!</strong>
+        <a th:href="${url}" target="_blank" th:if="${url != null}">Click para imprimir</a>
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+    </div>
+
     <table class="table table-dark">
         <thead>
         <tr>
@@ -62,10 +83,15 @@
             <td th:text="${departamento.id}"></td>
             <td th:text="${departamento.nombre}"></td>
             <td>
-                <a th:href="@{/departamento/editar/{id}(id=${departamento.id})}" class="btn btn-warning">editar <i
+                <a th:href="@{/departamento/editar/{id}(id=${departamento.id})}" class="btn btn-warning">editar Form<i
                         class="fa fa-pencil-square-o" aria-hidden="true"></i></a> |
+
                 <!--                        <a th:href="@{/cliente/editar/{id}(id=${cliente.id})}" class="btn btn-danger">borrar <i-->
                 <!--                                class="fa fa-trash-o" aria-hidden="true"></i></a>-->
+
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#staticBackdropEdit"
+                        th:value="*{departamento.id}+'__'+*{departamento.nombre}"+ id="patito" onclick="editarElemento(this)">editar modal
+                </button>
             </td>
         </tr>
         </tbody>
@@ -85,8 +111,123 @@
             </nav>
         </div>
     </div>
+
+    <!-- Modal guardar nuevo-->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+        <form th:action="@{/departamento/guardar}" method="post" th:object="${objetoDepartamento}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">
+                            CREAR DEPARTAMENTO
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                 class="bi bi-card-checklist" viewBox="0 0 16 16">
+                                <path
+                                        d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+                                <path
+                                        d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0M7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0" />
+                            </svg>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nombreDepartamento">Nombre Departamento</label>
+                            <input th:field="*{nombreDepartamento}" type="text" class="form-control" id="nombreDepartamento"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Guardar
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                 class="bi bi-floppy2-fill" viewBox="0 0 16 16">
+                                <path d="M12 2h-2v3h2z" />
+                                <path
+                                        d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0zM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1zM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal editar-->
+    <div class="modal fade" id="staticBackdropEdit" data-backdrop="static" data-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form th:action="@{/departamento/actualizar}" method="post" th:object="${objetoDepartamento}" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">
+                            ACTUALIZAR DEPARTAMENTO
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                 class="bi bi-card-checklist" viewBox="0 0 16 16">
+                                <path
+                                        d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+                                <path
+                                        d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0M7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0" />
+                            </svg>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="idE">id</label>
+                            <input th:field="*{id}" type="text" class="form-control" id="idE"
+                                   readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombreDepartamentoE">Nombre Departamento</label>
+                            <input th:field="*{nombreDepartamento}" type="text" class="form-control" id="nombreDepartamentoE"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Guardar
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                 class="bi bi-floppy2-fill" viewBox="0 0 16 16">
+                                <path d="M12 2h-2v3h2z" />
+                                <path
+                                        d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0zM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1zM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
+
+<script type="text/javascript">
+
+    function editarElemento(este) {
+        var vars = este.value;
+        var id_editor = document.getElementById("idE");
+        var departamento_editor = document.getElementById("nombreDepartamentoE");
+
+        var myArray = vars.split("__");
+
+        id_editor.value = myArray[0];
+        departamento_editor.value = myArray[1];
+
+    }
+
+
+</script>
 </body>
 
 </html>

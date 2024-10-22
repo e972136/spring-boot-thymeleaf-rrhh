@@ -25,4 +25,14 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     public Departamento findById(int id) {
         return departamentoRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Departamento findByNombreDepartamento(String nombreDepartamento) {
+        return departamentoRepository.findByNombreDepartamento(nombreDepartamento);
+    }
+
+    @Override
+    public Departamento save(Departamento objetoDepartamento) {
+        return departamentoRepository.save(objetoDepartamento);
+    }
 }
