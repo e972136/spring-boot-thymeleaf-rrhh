@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+    <link th:href="@{/style.css}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+</head>
+
+<title>Asignar Detalle</title>
+
+<body>
+
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#" th:text="${session.ciaNombre}">Navbar</a>
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link active btn btn-primary btn-lg" th:href="@{/departamento}">Regresar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active btn btn-primary btn-lg" th:href="@{/sistema/rrhh/menu/}+${session.sucursal}">Agregar Departamento</a>
+            </li>
+        </ul>
+
+    </nav>
+</div>
+
+<div class="container-fluid">
+
+
+    <form class="row" th:object="${descipcion}" th:action="@{/descripcion-detalle/guardar/asignacion/{id}(id=${descipcion.id})}" method="POST">
+<!--        <div class="form-group col-sm-12 col-md-2 col-lg-2">-->
+<!--            <label for="id" class="form-label">Id</label>-->
+<!--            <input type="text" name="" id="id" th:field="*{id}" class="form-control form-control-lg" readonly>-->
+<!--        </div>-->
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+            <h1 th:text="*{nombreEmpleado}+', Salario Mensual: L'+*{sueldoMensual}">
+            </h1>
+            <input type="text" name="" id="empleadoId" th:field="*{empleadoId}" class="form-control form-control-lg" hidden>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+            <label for="descripcionDetalleId" class="form-label">descripcionDetalleId</label>
+            <select th:field="*{descripcionDetalleId}" class="form-control color-fondo form-control-lg" name=""
+                    id="descripcionDetalleId" th:required="true">
+                <option value="">Seleccione una descripcion</option>
+                <option th:each="option : ${descripcionesDetalle}" th:value="${option.id}"
+                        th:text="${option.nombre}"></option>
+            </select>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+            <label for="quincenaAsignada" class="form-label">quincenaAsignada</label>
+            <select th:field="*{quincenaAsignada}" class="form-control color-fondo form-control-lg" name=""
+                    id="quincenaAsignada" th:required="true">
+                <option value="">Seleccione un momento de deduccion</option>
+                <option th:each="option : ${quincena}" th:value="${option.id}"
+                        th:text="${option.nombre}"></option>
+            </select>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+            <label for="tipoElemento" class="form-label">tipoElemento</label>
+            <select th:field="*{tipoElemento}" class="form-control color-fondo form-control-lg" name=""
+                    id="tipoElemento" th:required="true">
+                <option value="">Seleccione el tipo</option>
+                <option th:each="option : ${tipos}" th:value="${option.id}"
+                        th:text="${option.nombre}"></option>
+            </select>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+            <label for="monto" class="form-label">monto</label>
+            <input type="text" name="" id="monto" th:field="*{monto}" class="form-control form-control-lg">
+        </div>
+
+        <div class="form-group col-sm-12 col-md-6 col-lg-6">
+            <label for="fechaInicio" class="form-label">fechaInicio</label>
+            <input type="date" name="" id="fechaInicio" th:field="*{fechaInicio}" class="form-control form-control-lg">
+        </div>
+
+        <div class="form-group col-sm-12 col-md-6 col-lg-6">
+            <label for="fechaFinal" class="form-label">fechaFinal</label>
+            <input type="date" name="" id="fechaFinal" th:field="*{fechaFinal}" class="form-control form-control-lg">
+        </div>
+
+<!--        <div class="container" style="overflow-x: scroll;">-->
+<!--            <div class="row justify-content-center col-12 " >-->
+<!--                <table class="table table-striped text-center">-->
+<!--                    <thead>-->
+<!--                    <th>producto</th>-->
+<!--                    <th>cantidad</th>-->
+<!--                    <th>preciovendido</th>-->
+<!--                    <th>total</th>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    <tr th:each="item:*{detalle}">-->
+<!--                        <td class="col-1" th:text="${item.codigo}"></td>-->
+<!--                        <td class="col-1" th:text="${item.cantidad}"></td>-->
+<!--                        <td class="col-1" th:text="${item.preciovendido}"></td>-->
+<!--                        <td class="col-1" th:text="${item.total}"></td>-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="row col-12">
+            <button type="submit" class="btn btn-success btn-lg mr-1">Guardar
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                     class="bi bi-floppy" viewBox="0 0 16 16">
+                    <path d="M11 2H9v3h2z"/>
+                    <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
+                </svg>
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

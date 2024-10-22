@@ -1,0 +1,31 @@
+.patito{
+    height: 100%;
+    width: 70px;
+}
+
+.patito-ancho{
+    height: 100%;
+    width: 200px;
+}
+
+.patito-alto{
+    height: 100%;
+}
+
+.color-fondo{
+    background-color: #f2faf4;
+    border: 3px solid #205e04;
+}
+
+.fuente-consola{
+    font-size:30px;
+    font-family:tahoma;
+    font-weight: bold;
+}
+
+.fuente-consola-titulo{
+    font-size:50px;
+    font-family:tahoma;
+    font-weight: bold;
+    color:red;
+}

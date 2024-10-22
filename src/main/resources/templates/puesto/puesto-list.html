@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+    <link th:href="@{/style.css}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+</head>
+
+<title>Puestos</title>
+
+<body>
+
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#" th:text="${session.ciaNombre}">Navbar</a>
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link active btn btn-primary btn-lg" th:href="@{/sistema/rrhh/menu/}+${session.sucursal}">Regresar Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active btn btn-primary btn-lg" th:href="@{/sistema/rrhh/menu/}+${session.sucursal}">Agregar Puesto</a>
+            </li>
+        </ul>
+
+    </nav>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <h1>Lista de Puestos</h1>
+    </div>
+    <form action="" method="get" autocomplete="off">
+        <div class="input-group mb-3">
+
+            <input type="text" name="busqueda" class="form-control" placeholder="NOMBRE"
+                   th:value="${param.busqueda}">
+
+            <button class="btn btn-primary" type="submit" id="button-addon1">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </form>
+    <table class="table table-dark">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Puesto</th>
+            <th>ACCION</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="puesto: ${puestos}">
+            <td th:text="${puesto.id}"></td>
+            <td th:text="${puesto.nombre}"></td>
+            <td>
+                <a th:href="@{/puesto/editar/{id}(id=${puesto.id})}" class="btn btn-warning">editar <i
+                        class="fa fa-pencil-square-o" aria-hidden="true"></i></a> |
+                <!--                        <a th:href="@{/cliente/editar/{id}(id=${cliente.id})}" class="btn btn-danger">borrar <i-->
+                <!--                                class="fa fa-trash-o" aria-hidden="true"></i></a>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--                componente paginacion, no olvidar poner el bean en el principal y la dependencia-->
+    <div class="row">
+        <div class="col-sm-6">
+            <!--                        activar para mostrar total de registros-->
+            <!--                        <div sd:pagination-summary=""></div>-->
+        </div>
+        <div class="col-sm-6">
+            <nav class="pull-right">
+                <ul class="pagination" sd:pagination="full">
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

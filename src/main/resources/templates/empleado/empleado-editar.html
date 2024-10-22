@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+    <link th:href="@{/style.css}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+</head>
+
+<title>Empleado</title>
+
+<body>
+
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#" th:text="${session.ciaNombre}">Navbar</a>
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link active btn btn-primary btn-lg" th:href="@{/empleado}">Regresar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active btn btn-primary btn-lg" th:href="@{/sistema/rrhh/menu/}+${session.sucursal}">Agregar Departamento</a>
+            </li>
+        </ul>
+
+    </nav>
+</div>
+
+<div class="container-fluid">
+
+
+    <form class="row" th:object="${empleado}">
+
+        <div class="form-group col-sm-12 col-md-2 col-lg-2">
+            <label for="id" class="form-label">Id</label>
+            <input type="text" name="" id="id" th:field="*{id}" class="form-control form-control-lg" readonly>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-10 col-lg-10">
+            <label for="identidad" class="form-label">identidad</label>
+            <input type="text" name="" id="identidad" th:field="*{identidad}" class="form-control form-control-lg color-fondo " onchange="cambioColor(this)">
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+            <label for="nombreCompleto" class="form-label">nombreCompleto</label>
+            <input type="text" name="" id="nombreCompleto" th:field="*{nombreCompleto}" class="form-control form-control-lg color-fondo " onchange="cambioColor(this)">
+        </div>
+
+
+        <div class="form-group col-sm-12 col-md-6 col-lg-6">
+            <label for="departamentoId" class="form-label">departamentoId</label>
+<!--            <input type="text" name="" id="departamentoId" th:field="*{departamentoId}" class="form-control form-control-lg color-fondo ">-->
+            <select th:field="*{departamentoId}" class="form-control color-fondo form-control-lg" name=""
+                    id="departamentoId" th:required="true" onchange="cambioColor(this)">
+
+                <option value="">Seleccione un departamento</option>
+                <option th:each="option : ${departamentos}" th:value="${option.id}"
+                        th:text="${option.nombre}"></option>
+            </select>
+        </div>
+
+
+        <div class="form-group col-sm-12 col-md-6 col-lg-6">
+            <label for="puestoId" class="form-label">puestoId</label>
+<!--            <input type="text" name="" id="puestoId" th:field="*{puestoId}" class="form-control form-control-lg color-fondo ">-->
+            <select th:field="*{puestoId}" class="form-control color-fondo form-control-lg" name=""
+                    id="puestoId" th:required="true">
+
+                <option value="">Seleccione un puesto</option>
+                <option th:each="option : ${puestos}" th:value="${option.id}"
+                        th:text="${option.nombre}"></option>
+            </select>
+
+        </div>
+
+
+        <div class="form-group col-sm-12 col-md-6 col-lg-6">
+            <label for="fechaContratacion" class="form-label">fechaContratacion</label>
+            <input type="date" name="" id="fechaContratacion" th:field="*{fechaContratacion}" class="form-control form-control-lg color-fondo ">
+        </div>
+
+        <div class="form-group col-sm-12 col-md-6 col-lg-6">
+            <label for="fechaUltimoPago" class="form-label">fechaUltimoPago</label>
+            <input type="date" name="" id="fechaUltimoPago" th:field="*{fechaUltimoPago}" class="form-control form-control-lg color-fondo ">
+        </div>
+
+        <div class="form-group col-sm-12 col-md-6 col-lg-6">
+            <label for="fechaDespido" class="form-label">fechaDespido</label>
+            <input type="date" name="" id="fechaDespido" th:field="*{fechaDespido}" class="form-control form-control-lg color-fondo ">
+        </div>
+
+        <div class="form-group col-sm-12 col-md-6 col-lg-6">
+            <label for="fechaUltimasVacaciones" class="form-label">fechaUltimasVacaciones</label>
+            <input type="date" name="" id="fechaUltimasVacaciones" th:field="*{fechaUltimasVacaciones}" class="form-control form-control-lg color-fondo ">
+        </div>
+
+        <div class="form-group col-sm-12 col-md-6 col-lg-6">
+            <label for="obs" class="form-label">obs</label>
+            <input type="text" name="" id="obs" th:field="*{obs}" class="form-control form-control-lg color-fondo ">
+        </div>
+
+
+
+
+        <div class="row container" style="overflow-x: scroll;">
+            <div class="col-sm-12 col-md-6 col-lg-6" >
+                <h1>Ingreso</h1>
+                <table class="table table-striped text-center">
+                    <thead>
+                    <th>producto</th>
+                    <th>cantidad</th>
+                    <th>preciovendido</th>
+                    <th>total</th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${detallesIngreso}">
+                        <td class="col-1" th:text="${item.descripcionDetalle}"></td>
+                        <td class="col-1" th:text="${item.quincenaAsignada}"></td>
+                        <td class="col-1" th:text="${item.tipoElemento}"></td>
+                        <td class="col-1" th:text="${item.monto}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-6" >
+                <h1>Deduccion</h1>
+                <table class="table table-striped text-center">
+                    <thead>
+                    <th>producto</th>
+                    <th>cantidad</th>
+                    <th>preciovendido</th>
+                    <th>total</th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${detallesDeduccion}">
+                        <td class="col-1" th:text="${item.descripcionDetalle}"></td>
+                        <td class="col-1" th:text="${item.quincenaAsignada}"></td>
+                        <td class="col-1" th:text="${item.tipoElemento}"></td>
+                        <td class="col-1" th:text="${item.monto}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-3 col-lg-3">
+            <label for="sueldoMensual" class="form-label">sueldoMensual</label>
+            <input type="text" name="" id="sueldoMensual" th:field="*{sueldoMensual}" class="form-control form-control-lg color-fondo ">
+        </div>
+
+
+        <div class="form-group col-sm-12 col-md-3 col-lg-3">
+            <label for="ingresos" class="form-label">ingresos</label>
+            <input type="text" name="" id="ingresos" th:field="*{ingresos}" class="form-control form-control-lg color-fondo ">
+        </div>
+        <div class="form-group col-sm-12 col-md-3 col-lg-3">
+            <label for="deducciones" class="form-label">deducciones</label>
+            <input type="text" name="" id="deducciones" th:field="*{deducciones}" class="form-control form-control-lg color-fondo ">
+        </div>
+        <div class="form-group col-sm-12 col-md-3 col-lg-3">
+            <label for="sueldoFinal" class="form-label">sueldoFinal</label>
+            <input type="text" name="" id="sueldoFinal" th:field="*{sueldoFinal}" class="form-control form-control-lg color-fondo ">
+        </div>
+    </form>
+
+</div>
+
+
+<script type="text/javascript">
+
+
+    function cambioColor(este) {
+         este.style.backgroundColor = "#fcba03";
+    }
+
+    document.getElementById("myForm").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+            }
+    });
+
+
+</script>
+
+</body>
+
+</html>
