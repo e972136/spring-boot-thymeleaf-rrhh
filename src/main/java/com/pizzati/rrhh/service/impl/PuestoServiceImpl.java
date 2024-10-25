@@ -24,4 +24,14 @@ public class PuestoServiceImpl implements PuestoService {
     public Puesto findById(int id) {
         return puestoRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Puesto findByNombrePuestoAndDescripcionPuesto(String nombrePuesto, String descripcionPuesto) {
+        return puestoRepository.findByNombrePuestoAndDescripcionPuesto(nombrePuesto,descripcionPuesto);
+    }
+
+    @Override
+    public Puesto save(Puesto objetoPuesto) {
+        return puestoRepository.save(objetoPuesto);
+    }
 }
