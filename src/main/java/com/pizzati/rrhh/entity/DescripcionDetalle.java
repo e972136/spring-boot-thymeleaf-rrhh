@@ -1,10 +1,7 @@
 package com.pizzati.rrhh.entity;
 
 import com.pizzati.rrhh.utilities.QuincenaAsignada;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +23,8 @@ public class DescripcionDetalle {
 
     boolean obligatoria;
 
+    @Enumerated(EnumType.STRING)
     QuincenaAsignada quincenaAsignada;
+
     boolean activo;
 }

@@ -16,10 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
@@ -73,6 +70,65 @@ public class EmpleadoController {
         mav.addObject("departamentos",allDepartamentos);
 
         return mav;
+    }
+
+    @GetMapping("/crear")
+    public ModelAndView crearEmpleado(
+            HttpServletRequest request
+    ){
+        Integer sucursal = (Integer) request.getSession().getAttribute("sucursal");
+        if (sucursal == null) {
+            return new ModelAndView("redirect:/sucursales");
+        }
+
+        List<ItemComboBox> departamentos = departamentoService.findAll().stream()
+                .map(e -> new ItemComboBox(e.getId(), e.getNombreDepartamento()))
+                .toList();
+
+        List<ItemComboBox> puestos = puestoService.findAll().stream()
+                .map(e -> new ItemComboBox(e.getId(), e.getNombrePuesto()))
+                .toList();
+
+        ModelAndView mav = new ModelAndView("./empleado/empleado-nuevo");
+
+        mav.addObject("empleado",new EmpleadoDto());
+        mav.addObject("departamentos",departamentos);
+        mav.addObject("puestos",puestos);
+        return mav;
+    }
+
+    @PostMapping("/crear")
+    public ModelAndView guardarEmpleadoNuevo(
+            EmpleadoDto empleado,
+            HttpServletRequest request
+    ){
+        Integer sucursal = (Integer) request.getSession().getAttribute("sucursal");
+        if (sucursal == null) {
+            return new ModelAndView("redirect:/sucursales");
+        }
+
+        Empleado db =  empleadoService.saveEmpleado(generarEmpleado(empleado,sucursal));
+
+        ModelAndView mav = new ModelAndView("redirect:/empleado/editar/"+db.getId());
+        return mav;
+    }
+
+    private Empleado generarEmpleado(EmpleadoDto empleado,int sucursalId) {
+        return new Empleado(
+          0,
+                empleado.getIdentidad(),
+                empleado.getNombreCompleto(),
+                sucursalId,
+                empleado.getDepartamentoId(),
+                empleado.getPuestoId(),
+                empleado.getSueldoMensual(),
+                empleado.getFechaContratacion(),
+                null,
+                null,
+                null,
+                empleado.getObs(),
+                true
+        );
     }
 
     @GetMapping("/editar/{idEmpleado}")

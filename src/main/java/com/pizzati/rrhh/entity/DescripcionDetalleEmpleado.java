@@ -2,10 +2,7 @@ package com.pizzati.rrhh.entity;
 
 import com.pizzati.rrhh.utilities.QuincenaAsignada;
 import com.pizzati.rrhh.utilities.TipoElemento;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,8 +23,12 @@ public class DescripcionDetalleEmpleado {
     int empleadoId;
     int descripcionDetalleId;
 
+    @Enumerated(EnumType.STRING)
     QuincenaAsignada quincenaAsignada;
+
+    @Enumerated(EnumType.STRING)
     TipoElemento tipoElemento;
+
     BigDecimal monto;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
